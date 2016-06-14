@@ -1,0 +1,18 @@
+TARGETS = cloud-init-local rsyslog motd killprocs bootlogs apache2 single cloud-init mysql xinetd dbus rsync ntp cron ssh cloud-config exim4 cloud-final stop-bootlogd rc.local rmnologin
+INTERACTIVE = apache2
+apache2: rsyslog
+single: killprocs motd bootlogs
+cloud-init: rsyslog cloud-init-local
+mysql: rsyslog
+xinetd: rsyslog
+dbus: rsyslog
+rsync: rsyslog
+ntp: rsyslog
+cron: rsyslog
+ssh: cloud-init rsyslog
+cloud-config: cloud-init cloud-init-local
+exim4: rsyslog mysql
+cloud-final: cloud-config cloud-init-local cloud-init rsyslog ssh mysql exim4 xinetd apache2 motd bootlogs dbus rsync ntp cron
+stop-bootlogd: cloud-init-local cloud-init rsyslog ssh mysql cloud-config exim4 xinetd apache2 motd bootlogs dbus rsync ntp cron
+rc.local: cloud-init-local cloud-init rsyslog ssh mysql cloud-config exim4 xinetd apache2 motd bootlogs dbus rsync ntp cron
+rmnologin: cloud-init-local cloud-init rsyslog ssh mysql cloud-config exim4 xinetd apache2 motd bootlogs dbus rsync ntp cron

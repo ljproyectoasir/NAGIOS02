@@ -1,0 +1,11 @@
+TARGETS = cloud-init-local apache2 cloud-init xinetd cloud-config exim4 cloud-final urandom mysql sendsigs rsyslog umountnfs.sh rpcbind networking umountfs umountroot halt reboot
+mysql: exim4
+sendsigs: cloud-init mysql exim4 xinetd apache2
+rsyslog: mysql exim4 xinetd sendsigs apache2
+umountnfs.sh: sendsigs cloud-init mysql exim4 xinetd rsyslog apache2
+rpcbind: umountnfs.sh
+networking: umountnfs.sh mysql exim4 rpcbind xinetd apache2
+umountfs: umountnfs.sh cloud-init mysql networking exim4 rpcbind xinetd urandom apache2
+umountroot: umountfs
+halt: umountroot
+reboot: umountroot
